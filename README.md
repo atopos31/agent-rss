@@ -110,6 +110,10 @@ golang https://blog.golang.org/feed.atom
 ]
 ```
 
+## Find RSS Feeds
+
+Looking for RSS feeds to subscribe? Check out [awesome-rsshub-routes](https://github.com/JackyST0/awesome-rsshub-routes) for a curated list of RSS feeds across various categories.
+
 ## License
 
 MIT
