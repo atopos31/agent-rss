@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+const { execFileSync } = require('child_process');
+const path = require('path');
+
+const PACKAGES = {
+  'darwin-arm64': '@atopos31/agent-rss-darwin-arm64',
+  'darwin-x64': '@atopos31/agent-rss-darwin-x64',
+  'linux-arm64': '@atopos31/agent-rss-linux-arm64',
+  'linux-x64': '@atopos31/agent-rss-linux-x64',
+  'win32-x64': '@atopos31/agent-rss-win32-x64',
+};
+
+const platform = process.platform;
+const arch = process.arch === 'x64' ? 'x64' : process.arch;
+const key = `${platform}-${arch}`;
+const pkg = PACKAGES[key];
+
+if (!pkg) {
+  console.error(`Unsupported platform: ${key}`);
+  process.exit(1);
+}
+
+let binPath;
+try {
+  const pkgPath = require.resolve(`${pkg}/package.json`);
+  const binName = platform === 'win32' ? 'agent-rss.exe' : 'agent-rss';
+  binPath = path.join(path.dirname(pkgPath), 'bin', binName);
+} catch {
+  console.error(`Package ${pkg} not found. Try reinstalling.`);
+  process.exit(1);
+}
+
+try {
+  execFileSync(binPath, process.argv.slice(2), { stdio: 'inherit' });
+} catch (e) {
+  process.exit(e.status ?? 1);
+}

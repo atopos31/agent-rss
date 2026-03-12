@@ -1,0 +1,29 @@
+{
+  "name": "@atopos31/agent-rss",
+  "version": "0.0.0",
+  "description": "CLI RSS tool for AI agents",
+  "bin": {
+    "agent-rss": "bin/agent-rss"
+  },
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "files": [
+    "bin",
+    "scripts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atopos31/agent-rss.git"
+  },
+  "keywords": ["rss", "cli", "agent", "feed"],
+  "author": "atopos31",
+  "license": "MIT",
+  "optionalDependencies": {
+    "@atopos31/agent-rss-darwin-arm64": "0.0.0",
+    "@atopos31/agent-rss-darwin-x64": "0.0.0",
+    "@atopos31/agent-rss-linux-arm64": "0.0.0",
+    "@atopos31/agent-rss-linux-x64": "0.0.0",
+    "@atopos31/agent-rss-win32-x64": "0.0.0"
+  }
+}
