@@ -64,17 +64,30 @@ jobs:
 
       - name: Create npm package
         run: |
-          cat > dist/package.json << 'EOF'
+          cat > dist/package.json << EOF
           {
             "name": "@${{ env.NPM_SCOPE }}/agent-rss-${{ matrix.npm }}",
             "version": "${{ steps.ver.outputs.VERSION }}",
             "description": "agent-rss binary for ${{ matrix.npm }}",
             "os": ["${{ matrix.os }}"],
             "cpu": ["${{ matrix.cpu }}"],
-            "files": ["bin"],
+            "scripts": {
+              "postinstall": "node postinstall.js"
+            },
+            "files": ["bin", "postinstall.js"],
             "license": "MIT"
           }
           EOF
+
+          if [ "${{ matrix.goos }}" = "windows" ]; then
+            echo "// no-op for windows" > dist/postinstall.js
+          else
+            cat > dist/postinstall.js << 'SCRIPT'
+          const { chmodSync } = require("fs");
+          const { join } = require("path");
+          try { chmodSync(join(__dirname, "bin", "agent-rss"), 0o755); } catch {}
+          SCRIPT
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
