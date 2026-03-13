@@ -96,3 +96,40 @@ func TestParseTime(t *testing.T) {
 		}
 	}
 }
+
+func TestParseTime_Relative(t *testing.T) {
+	tests := []struct {
+		input    string
+		minAgo   time.Duration
+		maxAgo   time.Duration
+		wantErr  bool
+	}{
+		{"1h", 59 * time.Minute, 61 * time.Minute, false},
+		{"2h", 119 * time.Minute, 121 * time.Minute, false},
+		{"1d", 23 * time.Hour, 25 * time.Hour, false},
+		{"30m", 29 * time.Minute, 31 * time.Minute, false},
+		{"0m", 0, 1 * time.Minute, false},
+		{"abc", 0, 0, true},
+		{"1x", 0, 0, true},
+		{"h1", 0, 0, true},
+	}
+
+	for _, tt := range tests {
+		parsed, err := ParseTime(tt.input)
+		if tt.wantErr {
+			if err == nil {
+				t.Errorf("ParseTime(%q): expected error, got nil", tt.input)
+			}
+			continue
+		}
+		if err != nil {
+			t.Errorf("ParseTime(%q): unexpected error: %v", tt.input, err)
+			continue
+		}
+
+		ago := time.Since(parsed)
+		if ago < tt.minAgo || ago > tt.maxAgo {
+			t.Errorf("ParseTime(%q): got %v ago, want between %v and %v", tt.input, ago, tt.minAgo, tt.maxAgo)
+		}
+	}
+}

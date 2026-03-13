@@ -63,7 +63,12 @@ agent-rss fetch --all --format json
 ### 过滤
 
 ```bash
-# 按时间范围过滤
+# 按相对时间过滤（过去几小时/几天/几分钟）
+agent-rss fetch --all --since 1h      # 过去 1 小时
+agent-rss fetch --all --since 2d      # 过去 2 天
+agent-rss fetch --all --since 30m     # 过去 30 分钟
+
+# 按绝对时间过滤
 agent-rss fetch --all --since 2026-03-12
 agent-rss fetch --all --since 2026-03-12T08:00:00+08:00 --until 2026-03-12T18:00:00+08:00
 
@@ -74,7 +79,7 @@ agent-rss fetch --all --title "AI"
 agent-rss fetch --all --content "机器学习"
 
 # 组合过滤
-agent-rss fetch --all --since 2026-03-12 --title "Go" --title "Rust"
+agent-rss fetch --all --since 1d --title "Go" --title "Rust"
 ```
 
 ### 全局选项

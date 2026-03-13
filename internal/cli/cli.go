@@ -209,11 +209,11 @@ func fetchCmd() *cli.Command {
 			},
 			&cli.StringFlag{
 				Name:  "since",
-				Usage: "filter items published after this time (RFC3339 or YYYY-MM-DD)",
+				Usage: "filter items after this time (RFC3339, YYYY-MM-DD, or relative: 1h, 2d, 30m)",
 			},
 			&cli.StringFlag{
 				Name:  "until",
-				Usage: "filter items published before this time (RFC3339 or YYYY-MM-DD)",
+				Usage: "filter items before this time (RFC3339, YYYY-MM-DD, or relative: 1h, 2d, 30m)",
 			},
 			&cli.StringSliceFlag{
 				Name:  "title",
