@@ -1,5 +1,7 @@
 # agent-rss
 
+[中文文档](./README_CN.md)
+
 CLI RSS tool for AI agents. Subscribe to feeds, fetch RSS/Atom content, and filter by time or keywords.
 
 ## Installation
@@ -81,6 +83,25 @@ agent-rss fetch --all --since 2026-03-12 --title "Go" --title "Rust"
 # Use a custom feeds file
 agent-rss --file /path/to/feeds.txt list
 ```
+
+## Best Practices for AI Agents
+
+Many AI agent environments (like Claude Code, OpenClaw, etc.) have **output size limits** for bash commands. When fetching RSS feeds with lots of content, the output may be truncated.
+
+**Recommended approach:** Write output to a file, then use the agent's file reading capability to access the full content.
+
+```bash
+# Write RSS output to a temporary file
+agent-rss fetch --all --since 2026-03-12 > /tmp/rss-output.json
+
+# Then use the agent's Read tool to access the complete content
+# The agent can read /tmp/rss-output.json without size limitations
+```
+
+This pattern ensures:
+- No truncation of RSS content
+- Full access to all fetched items
+- Better handling of large feeds
 
 ## Feeds File Format
 
