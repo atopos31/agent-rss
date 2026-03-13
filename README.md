@@ -26,6 +26,14 @@ cd agent-rss
 go build -o agent-rss ./cmd/agent-rss
 ```
 
+### As a Skill
+
+Install as a skill for AI agents that support skills:
+
+```bash
+npx skills add atopos31/agent-rss
+```
+
 ## Usage
 
 ### Subscription Management

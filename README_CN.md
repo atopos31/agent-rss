@@ -26,6 +26,14 @@ cd agent-rss
 go build -o agent-rss ./cmd/agent-rss
 ```
 
+### 作为技能安装
+
+为支持技能的 AI Agent 安装技能：
+
+```bash
+npx skills add atopos31/agent-rss
+```
+
 ## 使用方法
 
 ### 订阅管理
