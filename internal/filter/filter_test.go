@@ -99,10 +99,10 @@ func TestParseTime(t *testing.T) {
 
 func TestParseTime_Relative(t *testing.T) {
 	tests := []struct {
-		input    string
-		minAgo   time.Duration
-		maxAgo   time.Duration
-		wantErr  bool
+		input   string
+		minAgo  time.Duration
+		maxAgo  time.Duration
+		wantErr bool
 	}{
 		{"1h", 59 * time.Minute, 61 * time.Minute, false},
 		{"2h", 119 * time.Minute, 121 * time.Minute, false},
