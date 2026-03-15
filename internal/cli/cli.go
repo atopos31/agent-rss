@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/urfave/cli/v3"
 
@@ -226,7 +227,6 @@ func fetchCmd() *cli.Command {
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
 			store := getStore(cmd)
-			fetcher := rss.New()
 
 			var feeds []model.Feed
 
@@ -254,15 +254,33 @@ func fetchCmd() *cli.Command {
 				return err
 			}
 
-			var allItems []model.Item
+			// Fetch feeds concurrently for better performance
+			var (
+				mu       sync.Mutex
+				wg       sync.WaitGroup
+				allItems []model.Item
+			)
+
 			for _, feed := range feeds {
-				items, err := fetcher.Fetch(ctx, feed)
-				if err != nil {
-					fmt.Fprintf(os.Stderr, "warning: %v\n", err)
-					continue
-				}
-				allItems = append(allItems, items...)
+				wg.Add(1)
+				go func(f model.Feed) {
+					defer wg.Done()
+
+					// Create a new fetcher for each goroutine to avoid race conditions
+					fetcher := rss.New()
+					items, err := fetcher.Fetch(ctx, f)
+					if err != nil {
+						fmt.Fprintf(os.Stderr, "warning: %v\n", err)
+						return
+					}
+
+					mu.Lock()
+					allItems = append(allItems, items...)
+					mu.Unlock()
+				}(feed)
 			}
+
+			wg.Wait()
 
 			filtered := filter.Filter(allItems, opts)
 
