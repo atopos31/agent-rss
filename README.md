@@ -1,3 +1,5 @@
+
+
 # agent-rss
 
 [中文文档](./README_CN.md)
@@ -118,7 +120,7 @@ This pattern ensures:
 
 ## Feeds File Format
 
-Feeds are stored in `~/.config/agent-rss/feeds.txt`:
+Feeds are stored in `~/.config/agent-rss/feeds.txt` (or `$XDG_CONFIG_HOME/agent-rss/feeds.txt` if `XDG_CONFIG_HOME` is set):
 
 ```
 # Comments start with #
